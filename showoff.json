@@ -1,0 +1,10 @@
+{
+  "name": "Backbone JS Presentation",
+  "description": "A Presentation on Backbone JS for a Carbon Five Hack Night Meetup",
+  "sections": [
+    {"section": "introduction"},
+    {"section": "framework"},
+    {"section": "usage"},
+    {"section": "projects"}
+  ]
+}
