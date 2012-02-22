@@ -1,10 +1,6 @@
 !SLIDE
 
-# Usage #
-
-!SLIDE
-
-# Project Structure #
+# Best Practices #
 
 !SLIDE smaller
 
@@ -32,27 +28,6 @@
       Timesheet.init();
     });
 
-
-!SLIDE smaller
-
-# Events #
-
-    @@@ javascript
-    var Timesheet.Views.StatusPanel = Backbone.View.extend({
-      events: {
-        "click .button": "updateStatus"
-      },
-
-      initialize: function() {
-        this.model.bind('change', this.updateStatus, this);
-      },
-
-      updateStatus: function() {
-        alert("status updated!");
-      }
-
-    });
-
 !SLIDE
 
 # Fat Views #
@@ -60,7 +35,8 @@
 * Composite View Objects
 * Sub-views
 
-!SLIDE
+!SLIDE center
+
 ![Layout Example](Layout.001.png)
 
 !SLIDE

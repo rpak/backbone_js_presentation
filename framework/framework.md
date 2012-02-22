@@ -2,23 +2,29 @@
 
 # Framework #
 
+!SLIDE
+
+# What is Backbone JS?#
+* A client-side MVC framework
+* Introduces structure to your JS codebase
+* Server-side synchronization
+* Current Version 0.9.1
+
 !SLIDE small
 
 # Models #
-* Synchonization with the Backend
+* Domain Logic
 * Computed Values
-* Logic
-* Model#fetch
-* Model#save
-* Model#destroy
-* Model#validate
+* Default Values
+* Server-side synchronization
+* \#fetch, \#save, \#destroy, \#validate
 
 !SLIDE smaller
 
 # Models #
 
     @@@ javascript
-    var Timesheet.Models.Task = Backbone.Model.extend({
+    Timesheet.Models.Task = Backbone.Model.extend({
       defaults: {
         completed_on: Date.today().toDateString(),
         time: 0
@@ -32,10 +38,8 @@
         var time = this.get('time');
         if (time >= 8)
           return 'complete';
-        else if (time < 8)
-          return 'incomplete';
         else
-          return 'due';
+          return 'incomplete';
       }
     });
 
@@ -43,24 +47,23 @@
 !SLIDE
 
 # Collections #
-* Collection#url
-* Collection#model
-* Collection#fetch
-* Collection#reset
+* Aggregates Models
+* Maintains Ordering
+* \#url, \#model, \#fetch, \#reset
 
 !SLIDE smaller
 
 # Collections #
 
     @@@ javascript
-    var Timesheet.Collections.Tasks = Backbone.Collection.extend({
-      model: Timesheet.Models.Task,
-
+    Timesheet.Collections.Tasks = Backbone.Collection.extend({
       url: '/tasks',
 
-      completedOn: function(date) {
-        this.filter(function(model) {
-          return !model.isNew();
+      model: Timesheet.Models.Task,
+
+      completed: function() {
+        return this.filter(function(model) {
+          return model.completed();
         });
       }
     });
@@ -69,18 +72,17 @@
 
 # Views #
 * DOM/HTML 
-* CSS
-* View#el
-* View#template
-* View#render
-* View#$
+* Controllers
+* \#el, \#template, \#render, \#$, \#events
 
 !SLIDE smaller
 
 # Views #
 
     @@@ javascript
-    var Timesheet.Views.StatusPanel = Backbone.View.extend({
+    Timesheet.Views.StatusPanel = Backbone.View.extend({
+      // el: '.app',
+      // tagName: 'p',
       className: 'StatusPanel',
 
       template: function() {
@@ -105,16 +107,17 @@
 
 !SLIDE
 
-# Views as Presenters #
-* Transitions
-* Interacting with Models
-* Handling Events
+# Views as Controllers #
+* Interacts with Models
+* Observes Model Events
+* Handles DOM Events
+* Transitions to other Views
 
 !SLIDE smaller
 
-# Views as Presenters #
+# Views as Controllers #
     @@@ javascript
-    var Timesheet.Views.StatusPanel = Backbone.View.extend({
+    Timesheet.Views.StatusPanel = Backbone.View.extend({
       events: {
         "click .button": "updateStatus"
       },
@@ -125,18 +128,18 @@
 
       updateStatus: function() {
         var message = this.model.get('status');
-        var dialog = new Timesheet.Views.ModalDialog();
+        var dialog = new Timesheet.Views.ModalDialog(message);
         dialog.render();
-        dialog.showMessage(message);
       }
     });
-
+    var model = new Timesheet.Models.Task();
+    var view = new Timesheet.Views.StatusPanel({model: model});
 
 !SLIDE
 
 # Routers #
 * Bookmarkable URLs
-* History
+* History / Back Button
 * Handling Application State
 
 !SLIDE smaller
@@ -144,18 +147,16 @@
 # Routers #
 
     @@@ javascript
-    var Timesheet.Routers.TasksRouter = Backbone.Router.extend({
+    Timesheet.Routers.TasksRouter = Backbone.Router.extend({
       routes: {
         "tasks": "index",       // #tasks
         "tasks/:date": "show"   // #tasks/2012-01-15
       },
 
       index: function() {
-        // Invoke a method on a view object to show something
       },
 
       show: function(date) {
-        // Invoke a method on a view object to show something
       }
     });
 
@@ -164,7 +165,7 @@
 # Events #
 * change
 * change:property
-* add
+* add (Collection Only)
 * destroy
 
 !SLIDE smaller
@@ -172,21 +173,23 @@
 # Events #
 
     @@@javascript
+    // '#on' is an alias for '#bind'
+
     this.model.bind('change', myFunction);
 
     this.model.bind('change:time', myFunction);
 
     this.collection.bind('add', myFunction);
 
-    this.model.bind('destroy', myFunction);
+    this.model.bind('destroy', myFunction, this);
 
-!SLIDE
+!SLIDE smaller
 
 # Custom Events #
 
     @@@javascript
     // In a view
-    this.model.bind('email:sent', myFunction);
+    this.model.bind('email:sent', showNotice, this);
 
     // In the model
     this.trigger('email:sent');

@@ -7,12 +7,14 @@
 ### Santa Monica, CA ###
 ### Feburary 22, 2012 ###
 
-#
-### git@github.com:rpak/backbone\_js\_presentation.git ###
+[http://backbone-js-presentation.heroku.com](http://backbone-js-presentation.heroku.com)
+
+
+[http://github.com/rpak/backbone\_js\_presentation](http://github.com/rpak/backbone\_js\_presentation)
 
 !SLIDE
 
 # Agenda #
 * Framework
-* Usage
+* Best Practices
 * Projects
