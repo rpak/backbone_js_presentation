@@ -1,14 +1,14 @@
 !SLIDE
 
-# Usage
+# Usage #
 
 !SLIDE
 
-# Project Structure
+# Project Structure #
 
-!SLIDE
+!SLIDE smaller
 
-# Namespacing
+# Namespacing #
 
     @@@ javascript
     window.Timesheet = {
@@ -18,12 +18,14 @@
       Routers: {},
       init: function() {
         Backbone.history.start();
+        var statusPanel = new Timesheet.Views.StatusPanel();
+        statusPanel.render();
       }
     }
 
 !SLIDE
 
-# Starting the App
+# Starting the App #
 
     @@@ javascript
     $(document).ready(function() {
@@ -33,7 +35,7 @@
 
 !SLIDE smaller
 
-# Events
+# Events #
 
     @@@ javascript
     var Timesheet.Views.StatusPanel = Backbone.View.extend({
@@ -53,6 +55,17 @@
 
 !SLIDE
 
-# jQuery
+# Fat Views #
 
-* View.$
+* Composite View Objects
+* Sub-views
+
+!SLIDE
+![Layout Example](Layout.001.png)
+
+!SLIDE
+
+# Testing #
+
+* Jasmine
+* Jasmine jQuery
